@@ -1,0 +1,52 @@
+﻿<Window x:Class="LibrarManagmentSystemWPFClient.BorrowedBooks"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LibrarManagmentSystemWPFClient"
+        mc:Ignorable="d"
+        Title="BorrowedBooks" Height="450" Width="800">
+    <Grid>
+        <ComboBox x:Name="MemberBox" ItemsSource="{Binding}" HorizontalAlignment="Left" Margin="176,37,0,0" VerticalAlignment="Top" Width="120" FontWeight="Bold" FontSize="16">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding FullName}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Label Content="Member" HorizontalAlignment="Left" Margin="82,31,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
+        <ComboBox x:Name="BookBox" HorizontalAlignment="Left" Margin="176,88,0,0" VerticalAlignment="Top" Width="120" FontWeight="Bold" FontSize="16">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Label Content="Book" HorizontalAlignment="Left" Margin="98,88,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
+        <DatePicker x:Name="BorrowDate"  HorizontalAlignment="Left" Margin="176,136,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Width="120"/>
+        <Label Content="BorrowDate" HorizontalAlignment="Left" Margin="55,135,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <DatePicker x:Name="ReturnDate" HorizontalAlignment="Left" Margin="176,193,0,0" VerticalAlignment="Top" Width="120" FontSize="16" FontWeight="Bold"/>
+        <Label Content="ReturnDate" HorizontalAlignment="Left" Margin="60,195,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.378,0.567" FontWeight="Bold" FontSize="16"/>
+        <ComboBox x:Name="Status" HorizontalAlignment="Left" Margin="176,239,0,0" VerticalAlignment="Top" Width="120" FontWeight="Bold" FontSize="16">
+            
+        </ComboBox>
+        <Label Content="Status " HorizontalAlignment="Left" Margin="78,235,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="16" RenderTransformOrigin="0.395,0.402"/>
+        <DataGrid x:Name="GridBorrowedBook" Margin="488,10,30,82" AutoGenerateColumns="False" ItemsSource="{Binding borrowedBooks}" MouseDoubleClick="GrideBorrowedBook_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="BorrowedBookID" Binding="{Binding BorrowedBookID}" />
+                <DataGridTextColumn Header="BorrowDate" Binding="{Binding BorrowDate}" />
+                <DataGridTextColumn Header="ReturnDate" Binding="{Binding ReturnDate}" />
+                <DataGridTextColumn Header="MemberID" Binding="{Binding MemberID}" />
+                <DataGridTextColumn Header="MemberName" Binding="{Binding MemberName}" />
+                <DataGridTextColumn Header="BookID" Binding="{Binding BookID}" />
+                <DataGridTextColumn Header="BookName" Binding="{Binding BookName}" />
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="ShowList" Content="Show List" HorizontalAlignment="Left" Margin="317,289,0,0" VerticalAlignment="Top" Width="83" FontWeight="Bold" FontSize="16" Click="ShowList_Click"/>
+        <Button x:Name="SaveBorrowedBook" Content="Save" HorizontalAlignment="Left" Margin="45,289,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Width="74" Click="SaveBorrowedBook_Click"/>
+        <Button x:Name="DeleteBorrowedBook" Content="Delete" HorizontalAlignment="Left" Margin="137,289,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.462,1.476" FontWeight="Bold" FontSize="16" Width="73" Click="DeleteBorrowedBook_Click"/>
+        <Button x:Name="UpdateBorrowedBook" Content="Update" HorizontalAlignment="Left" Margin="226,289,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.614,1.847" FontWeight="Bold" FontSize="16" Width="70" Click="UpdateBorrowedBook_Click"/>
+
+    </Grid>
+</Window>
