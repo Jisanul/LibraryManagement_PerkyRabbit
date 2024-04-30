@@ -1,28 +1,30 @@
-﻿using LibraryManagementSystem.Models;
-using LibraryWebApi.Models;
+﻿using LibraryWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Json;
 using Newtonsoft.Json;
 using System.Text;
+using System.Reflection;
+using System.Net.Http;
 
 namespace LibraryWebApi.Controllers
 {
-    public class BookController : Controller
+    public class MemberController : Controller
     {
         Uri baseurl = new Uri("https://localhost:7041/APIs");
 
         private readonly HttpClient _httpClient;
 
-        public BookController()
+        public MemberController() 
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = baseurl;
-
+             _httpClient = new HttpClient();
+            _httpClient.BaseAddress = baseurl;  
+        
         }
 
         [HttpGet]
         public async Task<IActionResult> IndexAsync()
         {
-            List<Book> members = new List<Book>();
+            List<Member> members = new List<Member>();
 
             try
             {
@@ -30,13 +32,13 @@ namespace LibraryWebApi.Controllers
                 {
                     httpClient.BaseAddress = new Uri("https://localhost:7041/");
 
-                    HttpResponseMessage response = await httpClient.GetAsync("GetBooks");
+                    HttpResponseMessage response = await httpClient.GetAsync("GetMembers");
 
                     if (response.IsSuccessStatusCode)
                     {
                         string data = await response.Content.ReadAsStringAsync();
 
-                        members = JsonConvert.DeserializeObject<List<Book>>(data);
+                        members = JsonConvert.DeserializeObject<List<Member>>(data);
                     }
                     else
                     {
@@ -54,26 +56,26 @@ namespace LibraryWebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
-        {
-
+        public IActionResult Create() 
+        { 
+              
             return View();
-
+        
         }
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(Book m)
+        public async Task<IActionResult> CreateAsync(Member m)
         {
             try
             {
                 string data = JsonConvert.SerializeObject(m);
                 StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _httpClient.PostAsync("InsertBook", content);
+                HttpResponseMessage response = await _httpClient.PostAsync("InsertMember", content);
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Index");
                 }
 
-
+                
             }
             catch (Exception ex)
             {
@@ -82,10 +84,10 @@ namespace LibraryWebApi.Controllers
             return View();
         }
 
-        [HttpGet]   
+        [HttpGet]
         public async Task<IActionResult> EditAsync(int id)
         {
-            Book bk = new Book();
+            Member member = new Member();
             try
             {
                 using (HttpClient httpClient = new HttpClient())
@@ -94,19 +96,17 @@ namespace LibraryWebApi.Controllers
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                    HttpResponseMessage response = await httpClient.GetAsync($"GetBookByID?id={id}");
+                    HttpResponseMessage response = await httpClient.GetAsync($"GetMemberByID?id={id}");
 
                     if (response.IsSuccessStatusCode)
                     {
                         string data = await response.Content.ReadAsStringAsync();
 
-    
-                        bk = JsonConvert.DeserializeObject<Book>(data);
+                        member = JsonConvert.DeserializeObject<Member>(data);
                     }
                     else
                     {
                         // Handle unsuccessful response (optional)
-                
                     }
                 }
             }
@@ -114,32 +114,31 @@ namespace LibraryWebApi.Controllers
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
-            return View(bk);
+            return View(member);  
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditAsync(Book model)
+        public async Task<IActionResult> EditAsync( Member model)
         {
             string data = JsonConvert.SerializeObject(model);
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PutAsync("UpdateBook", content);
-
-            if (response.IsSuccessStatusCode)
+            HttpResponseMessage response = await _httpClient.PutAsync("UpdateMember", content);
+            
+            if (response.IsSuccessStatusCode) 
             {
 
                 return RedirectToAction("Index");
-
+            
             }
-
+            
             return View();
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> DeleteAsync(int id) 
         {
-            Book bk = new Book();
+            Member member = new Member();
             try
             {
                 using (HttpClient httpClient = new HttpClient())
@@ -148,13 +147,13 @@ namespace LibraryWebApi.Controllers
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                    HttpResponseMessage response = await httpClient.GetAsync($"GetBookByID?id={id}");
+                    HttpResponseMessage response = await httpClient.GetAsync($"GetMemberByID?id={id}");
 
                     if (response.IsSuccessStatusCode)
                     {
                         string data = await response.Content.ReadAsStringAsync();
 
-                        bk = JsonConvert.DeserializeObject<Book>(data);
+                        member = JsonConvert.DeserializeObject<Member>(data);
                     }
                     else
                     {
@@ -166,19 +165,19 @@ namespace LibraryWebApi.Controllers
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
-            return View(bk);
+            return View(member);
 
 
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost,ActionName("Delete")] 
         public async Task<IActionResult> DeleteConfirmedAsync(int id)
         {
 
 
             try
             {
-                HttpResponseMessage response = await _httpClient.DeleteAsync($"/DeleteBook/{id}");
+                HttpResponseMessage response = await _httpClient.DeleteAsync($"/DeleteMember/{id}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -195,7 +194,8 @@ namespace LibraryWebApi.Controllers
                 return View("Error");
             }
 
-
+            
         }
+
     }
 }

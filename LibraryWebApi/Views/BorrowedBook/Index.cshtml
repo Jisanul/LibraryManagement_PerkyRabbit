@@ -1,0 +1,113 @@
+﻿@using LibraryManagementSystem.Models
+@model IEnumerable<LibraryManagementSystem.Models.BorrowedBook>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BorrowedBookID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BorrowDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BorrowedBookID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BorrowDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReturnDate)
+                    </td>
+                    <td>
+                        @{
+                            var memberId = item.MemberID;
+                            var members = ViewBag.Members as List<Member>; // Cast ViewBag.Members to List<Member>
+                            if (members != null)
+                            {
+                                var member = members.FirstOrDefault(m => m.MemberID == memberId);
+                                if (member != null)
+                                {
+                                    @member.FirstName
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Unknown</span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-danger">Members data is not available</span>
+                            }
+                        }
+                    </td>
+
+
+                    <td>
+                        @{
+                            var bookId = item.BookID;
+                            var books = ViewBag.Books as List<Book>; // Cast ViewBag.Books to List<Book>
+                            if (books != null)
+                            {
+                                var book = books.FirstOrDefault(b => b.BookID == bookId);
+                                if (book != null)
+                                {
+                                    @book.Title
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Unknown</span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-danger">Books data is not available</span>
+                            }
+                        }
+                    </td>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.BorrowedBookID }) |
+
+                        @Html.ActionLink("Delete", "Delete", new { id = item.BorrowedBookID })
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

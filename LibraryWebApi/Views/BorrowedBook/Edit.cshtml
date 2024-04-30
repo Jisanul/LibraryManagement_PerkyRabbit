@@ -1,0 +1,112 @@
+﻿@model LibraryManagementSystem.Models.BorrowedBook
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>BorrowedBook</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BorrowedBookID" class="control-label"></label>
+                <input asp-for="BorrowedBookID" class="form-control" />
+                <span asp-validation-for="BorrowedBookID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BorrowDate" class="control-label"></label>
+                <input asp-for="BorrowDate" class="form-control" />
+                <span asp-validation-for="BorrowDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReturnDate" class="control-label"></label>
+                <input asp-for="ReturnDate" class="form-control" />
+                <span asp-validation-for="ReturnDate" class="text-danger"></span>
+            </div>
+            @*  <div class="form-group">
+            <label asp-for="MemberID" class="control-label"></label>
+            <input asp-for="MemberID" class="form-control" />
+            <span asp-validation-for="MemberID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+            <label asp-for="BookID" class="control-label"></label>
+            <input asp-for="BookID" class="form-control" />
+            <span asp-validation-for="BookID" class="text-danger"></span>
+            </div> *@
+
+            @if (ViewBag.Authors != null)
+            {
+
+                <div class="form-group">
+                    <label asp-for="MemberID" class="control-label"></label>
+                    <select asp-for="MemberID" class="form-control">
+                        <option value="">Select Author</option>
+                        @foreach (var author in ViewBag.Authors)
+                        {
+                            <option value="@author.MemberID">@author.FirstName</option>
+                        }
+                    </select>
+                    <span asp-validation-for="MemberID" class="text-danger"></span>
+                </div>
+
+            }
+
+
+            @* <div class="form-group">
+            <label asp-for="BookID" class="control-label"></label>
+            <input asp-for="BookID" class="form-control" />
+            <span asp-validation-for="BookID" class="text-danger"></span>
+            </div> *@
+
+            @if (ViewBag.Books != null)
+            {
+
+                <div class="form-group">
+                    <label asp-for="BookID" class="control-label"></label>
+                    <select asp-for="BookID" class="form-control">
+                        <option value="">Select Author</option>
+                        @foreach (var author in ViewBag.Books)
+                        {
+                            <option value="@author.BookID">@author.Title</option>
+                        }
+                    </select>
+                    <span asp-validation-for="BookID" class="text-danger"></span>
+                </div>
+
+            }
+
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control">
+                    <option value="Borrowed">Borrowed</option>
+                    <option value="Returned">Returned</option>
+                    <option value="Overdue">Overdue</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+          @*   <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
