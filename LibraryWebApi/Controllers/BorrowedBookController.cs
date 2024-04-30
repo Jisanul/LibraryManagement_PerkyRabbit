@@ -30,28 +30,22 @@ namespace LibraryWebApi.Controllers
 
             try
             {
-                // Create a new instance of HttpClient
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    // Set the base address of the HttpClient to your Web API URL
                     httpClient.BaseAddress = new Uri("https://localhost:7041/");
 
-                    // Send GET requests to all three endpoints simultaneously
                     HttpResponseMessage responseBorrowedBooks = await httpClient.GetAsync("GetBorrowedBooks");
                     HttpResponseMessage responseMembers = await httpClient.GetAsync("GetMembers");
                     HttpResponseMessage responseBooks = await httpClient.GetAsync("GetBooks");
 
-                    // Check if all responses are successful
                     if (responseBorrowedBooks.IsSuccessStatusCode &&
                         responseMembers.IsSuccessStatusCode &&
                         responseBooks.IsSuccessStatusCode)
                     {
-                        // Read the response content as strings
                         string dataBorrowedBooks = await responseBorrowedBooks.Content.ReadAsStringAsync();
                         string dataMembers = await responseMembers.Content.ReadAsStringAsync();
                         string dataBooks = await responseBooks.Content.ReadAsStringAsync();
 
-                        // Deserialize the JSON data into lists
                         borrowedBooks = JsonConvert.DeserializeObject<List<BorrowedBook>>(dataBorrowedBooks);
                         members = JsonConvert.DeserializeObject<List<Member>>(dataMembers);
                         books = JsonConvert.DeserializeObject<List<Book>>(dataBooks);
@@ -59,18 +53,15 @@ namespace LibraryWebApi.Controllers
                     else
                     {
                         // Handle unsuccessful responses (optional)
-                        // For example, log the error or display a message to the user
+                 
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Handle any exceptions that occur during the request (optional)
-                // For example, log the exception or display an error message to the user
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
 
-            // Pass the lists of borrowed books, members, and books to the view
             ViewBag.BorrowedBooks = borrowedBooks;
             ViewBag.Members = members;
             ViewBag.Books = books;
